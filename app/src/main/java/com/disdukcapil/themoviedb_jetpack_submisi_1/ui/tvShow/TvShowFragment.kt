@@ -13,6 +13,7 @@ import com.disdukcapil.themoviedb_jetpack_submisi_1.data.DataEntity
 import com.disdukcapil.themoviedb_jetpack_submisi_1.ui.detail.ContentCallback
 import com.disdukcapil.themoviedb_jetpack_submisi_1.ui.detail.DetailActivity
 import com.disdukcapil.themoviedb_jetpack_submisi_1.utils.helper
+import com.disdukcapil.themoviedb_jetpack_submisi_1.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_tv_show_frament.*
 
 
@@ -31,11 +32,15 @@ class TvShowFragment : Fragment(),ContentCallback {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (activity != null){
-            viewModel = ViewModelProvider(this,ViewModelProvider.NewInstanceFactory())[TvShowViewModel::class.java]
-            val tvShow = viewModel.getTvShow()
+            val factory = ViewModelFactory.getInstance()
+            val viewModel = ViewModelProvider(this, factory)[TvShowViewModel::class.java]
 
-            val tvShowAdapter = TvShowAdapter(this@TvShowFragment)
-            tvShowAdapter.setTvshow(tvShow)
+            val tvShowAdapter = TvShowAdapter()
+
+            viewModel.getTvShow().observe(this,{ tv ->
+                tvShowAdapter.setTvShows(tv)
+                tvShowAdapter.notifyDataSetChanged()
+            })
 
             rv_tvshow.layoutManager = GridLayoutManager(context,2)
             rv_tvshow.setHasFixedSize(true)

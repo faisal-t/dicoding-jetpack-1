@@ -8,20 +8,20 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.disdukcapil.themoviedb_jetpack_submisi_1.R
 import com.disdukcapil.themoviedb_jetpack_submisi_1.data.DataEntity
+import com.disdukcapil.themoviedb_jetpack_submisi_1.data.local.entity.TvShowEntity
 import com.disdukcapil.themoviedb_jetpack_submisi_1.databinding.ItemBinding
-import com.disdukcapil.themoviedb_jetpack_submisi_1.ui.detail.ContentCallback
 import com.disdukcapil.themoviedb_jetpack_submisi_1.ui.detail.DetailActivity
-import com.disdukcapil.themoviedb_jetpack_submisi_1.ui.movie.MovieAdapter
-import com.disdukcapil.themoviedb_jetpack_submisi_1.ui.tvShow.TvShowAdapter.TvShowViewHolder
+import com.disdukcapil.themoviedb_jetpack_submisi_1.utils.helper
 
-class TvShowAdapter(private val callback: ContentCallback) : RecyclerView.Adapter<TvShowViewHolder>() {
 
-    private var listTv = ArrayList<DataEntity>()
+class TvShowAdapter : RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
+    private var listTvShows = ArrayList<TvShowEntity>()
 
-    fun setTvshow(movie : List<DataEntity>){
-        if (movie == null) return
-        this.listTv.clear()
-        this.listTv.addAll(movie)
+    fun setTvShows(tvShows: List<TvShowEntity>?) {
+        if (tvShows.isNullOrEmpty()) return
+        this.listTvShows.clear()
+        this.listTvShows.addAll(tvShows)
+        this.notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder {
@@ -30,31 +30,39 @@ class TvShowAdapter(private val callback: ContentCallback) : RecyclerView.Adapte
     }
 
     override fun onBindViewHolder(holder: TvShowViewHolder, position: Int) {
-        val dataEntity = listTv[position]
-        holder.bind(dataEntity)
+        holder.bind(listTvShows[position])
     }
 
-    override fun getItemCount(): Int = listTv.size
+    override fun getItemCount(): Int = listTvShows.size
 
     inner class TvShowViewHolder(private val binding: ItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-         fun bind(dataEntity: DataEntity){
-            with(binding){
-                tvTitle.text = dataEntity.title
+        fun bind(tvShowEntity: TvShowEntity) {
+            with(binding) {
+                tvTitle.text = tvShowEntity.name
 
-                itemCard.setOnClickListener {
-                    callback.onItemClicked(dataEntity)
-                }
+
 
                 Glide.with(itemView.context)
-                        .load(dataEntity.imgPoster)
-                        .apply(RequestOptions.placeholderOf(R.drawable.ic_baseline_refresh_24)
-                                .error(R.drawable.ic_baseline_error_24))
-                        .into(imgItemPhoto)
+                    .load("https://www.themoviedb.org/t/p/w600_and_h900_bestv2${tvShowEntity.posterPath}")
+                    .apply(
+                        RequestOptions.placeholderOf(R.drawable.ic_baseline_refresh_24)
+                            .error(R.drawable.ic_baseline_error_24)
+                    )
+                    .into(imgItemPhoto)
 
+                itemView.setOnClickListener {
+                    val intent = Intent(itemView.context, DetailActivity::class.java).apply {
+                        putExtra(DetailActivity.EXTRA_TYPE, helper.TYPE_TVSHOW)
+                        putExtra(DetailActivity.EXTRA_DATA, tvShowEntity.id.toString())
+                    }
+
+                    itemView.context.startActivity(intent)
+
+                }
             }
+
+
         }
-
-
     }
 }

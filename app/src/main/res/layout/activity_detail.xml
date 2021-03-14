@@ -65,6 +65,7 @@
         android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        android:padding="10dp"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/tv_title"
         app:layout_constraintTop_toBottomOf="@+id/tv_title"
@@ -109,7 +110,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@string/genre"
+        android:text="@string/rating"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -119,7 +120,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_desc" />
 
     <TextView
-        android:id="@+id/tv_genre"
+        android:id="@+id/tv_rating"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -127,7 +128,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        tools:text="@string/genre"
+        tools:text="@string/rating"
         android:textAlignment="textStart"
         android:textColor="@color/black"
         android:textSize="14sp"

@@ -9,7 +9,7 @@ object helper {
     const val TYPE_MOVIE = "TYPE_MOVIE"
     const val TYPE_TVSHOW = "TYPE_TVSHOW"
 
-    fun setGlideImage(context: Context, imagePath: Int, imageView: ImageView) {
+    fun setGlideImage(context: Context, imagePath: String?, imageView: ImageView) {
         Glide.with(context).clear(imageView)
         Glide.with(context).load(imagePath).into(imageView)
     }

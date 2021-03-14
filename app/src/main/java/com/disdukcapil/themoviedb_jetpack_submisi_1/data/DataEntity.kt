@@ -1,5 +1,9 @@
 package com.disdukcapil.themoviedb_jetpack_submisi_1.data
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class DataEntity (
         var id: String,
         var title: String,
@@ -7,4 +11,4 @@ data class DataEntity (
         var genre: String,
         var releaseYear: String,
         var imgPoster: Int,
-    )
+    ) : Parcelable

@@ -1,11 +1,14 @@
 package com.disdukcapil.themoviedb_jetpack_submisi_1.ui.tvShow
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.disdukcapil.themoviedb_jetpack_submisi_1.data.DataEntity
-import com.disdukcapil.themoviedb_jetpack_submisi_1.utils.DataDummy
 
-class TvShowViewModel : ViewModel() {
+import com.disdukcapil.themoviedb_jetpack_submisi_1.data.MovieAppRepository
+import com.disdukcapil.themoviedb_jetpack_submisi_1.data.local.entity.TvShowEntity
 
-    fun getTvShow() : List<DataEntity> = DataDummy.generateDummyTvShows()
+
+class TvShowViewModel(private val movieAppRepository: MovieAppRepository) : ViewModel() {
+
+    fun getTvShow() : LiveData<List<TvShowEntity>> = movieAppRepository.getAllTvShows()
 
 }

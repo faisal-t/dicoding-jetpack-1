@@ -14,12 +14,13 @@ import com.disdukcapil.themoviedb_jetpack_submisi_1.data.DataEntity
 import com.disdukcapil.themoviedb_jetpack_submisi_1.ui.detail.ContentCallback
 import com.disdukcapil.themoviedb_jetpack_submisi_1.ui.detail.DetailActivity
 import com.disdukcapil.themoviedb_jetpack_submisi_1.utils.helper.TYPE_MOVIE
+import com.disdukcapil.themoviedb_jetpack_submisi_1.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_movie.*
 
 
 class MovieFragment : Fragment(),ContentCallback {
 
-    private lateinit var viewModel: MovieViewModel
+
 
 
     override fun onCreateView(
@@ -33,15 +34,22 @@ class MovieFragment : Fragment(),ContentCallback {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (activity != null){
-            viewModel = ViewModelProvider(this,ViewModelProvider.NewInstanceFactory())[MovieViewModel::class.java]
-            val movie = viewModel.getMovie()
+            val factory = ViewModelFactory.getInstance()
+            val viewModel = ViewModelProvider(this, factory)[MovieViewModel::class.java]
 
-            val movieAdapter = MovieAdapter(this@MovieFragment)
-            movieAdapter.setMovie(movie)
+            val moviesAdapter = MoviesAdapter()
 
-            rv_movie.layoutManager = GridLayoutManager(context,2)
-            rv_movie.setHasFixedSize(true)
-            rv_movie.adapter = movieAdapter
+
+
+            viewModel.getMovie().observe(this, { movies ->
+                moviesAdapter.setMovies(movies)
+                moviesAdapter.notifyDataSetChanged()
+                rv_movie.layoutManager = GridLayoutManager(context,2)
+                rv_movie.setHasFixedSize(true)
+                rv_movie.adapter = moviesAdapter
+            })
+
+
 
         }
 
